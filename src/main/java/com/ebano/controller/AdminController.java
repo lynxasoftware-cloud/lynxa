@@ -38,7 +38,6 @@ public class AdminController {
     private final SiteConfigRepository siteConfigRepository;
     private final ServicioRepository servicioRepository;
     private final SistemaRepository sistemaRepository;
-    private final ConsultaRepository consultaRepository;
     private final AdminUserRepository adminUserRepository;
 
     @Value("${app.uploads.dir}")
@@ -47,12 +46,10 @@ public class AdminController {
     public AdminController(SiteConfigRepository siteConfigRepository,
                             ServicioRepository servicioRepository,
                             SistemaRepository sistemaRepository,
-                            ConsultaRepository consultaRepository,
                             AdminUserRepository adminUserRepository) {
         this.siteConfigRepository = siteConfigRepository;
         this.servicioRepository = servicioRepository;
         this.sistemaRepository = sistemaRepository;
-        this.consultaRepository = consultaRepository;
         this.adminUserRepository = adminUserRepository;
     }
 
@@ -161,29 +158,6 @@ public class AdminController {
             candidato = base + "-" + i;
             i++;
         }
-    }
-
-    // ---------------- CONSULTAS RECIBIDAS ----------------
-
-    @GetMapping("/consultas")
-    public List<Consulta> listarConsultas() {
-        return consultaRepository.findAllByOrderByFechaCreacionDesc();
-    }
-
-    @PutMapping("/consultas/{id}/marcar-leida")
-    public ResponseEntity<?> marcarLeida(@PathVariable Long id) {
-        return consultaRepository.findById(id).map(c -> {
-            c.setLeida(true);
-            consultaRepository.save(c);
-            return ResponseEntity.ok(Map.of("ok", true));
-        }).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/consultas/{id}")
-    public ResponseEntity<?> eliminarConsulta(@PathVariable Long id) {
-        if (!consultaRepository.existsById(id)) return ResponseEntity.notFound().build();
-        consultaRepository.deleteById(id);
-        return ResponseEntity.ok(Map.of("ok", true));
     }
 
     // ---------------- CAMBIO DE CLAVE DEL ADMIN ----------------

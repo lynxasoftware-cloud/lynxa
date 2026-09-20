@@ -13,6 +13,7 @@ public class Sistema {
     // Global unico compartido por todos los sistemas (ver SiteConfig: sis*).
 
     public enum Estado { DISPONIBLE, PERSONALIZABLE, EN_DESARROLLO, PROXIMAMENTE }
+    public enum TipoPrecio { UNICO, MENSUAL }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,10 @@ public class Sistema {
     private Estado estado = Estado.DISPONIBLE;
 
     private Double precio;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private TipoPrecio tipoPrecio = TipoPrecio.UNICO;
 
     @Column(nullable = false)
     private boolean mostrarPrecio = false;
@@ -100,6 +105,8 @@ public class Sistema {
     public void setEstado(Estado v) { this.estado = v; }
     public Double getPrecio() { return precio; }
     public void setPrecio(Double v) { this.precio = v; }
+    public TipoPrecio getTipoPrecio() { return tipoPrecio; }
+    public void setTipoPrecio(TipoPrecio v) { this.tipoPrecio = v; }
     public boolean isMostrarPrecio() { return mostrarPrecio; }
     public void setMostrarPrecio(boolean v) { this.mostrarPrecio = v; }
     public String getImagenPrincipal() { return imagenPrincipal; }
