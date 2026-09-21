@@ -1,4 +1,5 @@
 package com.ebano.model;
+// build-fix-tipoPrecio
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
