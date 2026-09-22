@@ -65,20 +65,21 @@ public class Sistema {
     @OrderColumn(name = "posicion")
     private List<String> caracteristicas = new ArrayList<>();
 
-    // Una o mas URLs de demo (antes era un solo campo). Cada una se muestra
-    // como su propio boton en la ficha ("Ver demo" si hay una sola, "Ver demo 1",
-    // "Ver demo 2"... si hay varias).
+    // Botones de demo: cada uno tiene su propia etiqueta (elegida por el admin,
+    // ej. "Demo panel", "Demo pagina publica") y su URL. Antes era una lista
+    // plana de URLs con nombres autogenerados ("Ver demo 1", "Ver demo 2").
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "sistema_demo_urls", joinColumns = @JoinColumn(name = "sistema_id"))
-    @Column(name = "url", length = 300)
+    @CollectionTable(name = "sistema_demo_links", joinColumns = @JoinColumn(name = "sistema_id"))
     @OrderColumn(name = "posicion")
-    private List<String> demoUrls = new ArrayList<>();
+    private List<DemoLink> demoLinks = new ArrayList<>();
 
     @Column(nullable = false)
     private boolean demoActiva = false;
 
-    @Column(length = 80)
-    private String textoBotonDemo = "Ver demo";
+    // Instrucciones libres para probar la demo (ej. usuarios/contraseñas de
+    // prueba). Editable por sistema, se muestra en la ficha si no esta vacio.
+    @Column(length = 2000)
+    private String instruccionesDemo;
 
     @Column(length = 200)
     private String textoConsulta = "Consultar este sistema";
@@ -116,12 +117,12 @@ public class Sistema {
     public void setGaleria(List<String> v) { this.galeria = v; }
     public List<String> getCaracteristicas() { return caracteristicas; }
     public void setCaracteristicas(List<String> v) { this.caracteristicas = v; }
-    public List<String> getDemoUrls() { return demoUrls; }
-    public void setDemoUrls(List<String> v) { this.demoUrls = v; }
+    public List<DemoLink> getDemoLinks() { return demoLinks; }
+    public void setDemoLinks(List<DemoLink> v) { this.demoLinks = v; }
     public boolean isDemoActiva() { return demoActiva; }
     public void setDemoActiva(boolean v) { this.demoActiva = v; }
-    public String getTextoBotonDemo() { return textoBotonDemo; }
-    public void setTextoBotonDemo(String v) { this.textoBotonDemo = v; }
+    public String getInstruccionesDemo() { return instruccionesDemo; }
+    public void setInstruccionesDemo(String v) { this.instruccionesDemo = v; }
     public String getTextoConsulta() { return textoConsulta; }
     public void setTextoConsulta(String v) { this.textoConsulta = v; }
     public Integer getOrden() { return orden; }
@@ -129,8 +130,8 @@ public class Sistema {
     public boolean isVisible() { return visible; }
     public void setVisible(boolean v) { this.visible = v; }
 
-    /** Hay demo real solo si esta activa Y tiene al menos una URL cargada. */
+    /** Hay demo real solo si esta activa Y tiene al menos un boton cargado con URL. */
     public boolean tieneDemoUtilizable() {
-        return demoActiva && demoUrls != null && !demoUrls.isEmpty();
+        return demoActiva && demoLinks != null && demoLinks.stream().anyMatch(d -> d.getUrl() != null && !d.getUrl().isBlank());
     }
 }
