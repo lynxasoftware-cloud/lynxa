@@ -49,6 +49,11 @@ public class SiteConfig {
     private String heroImagenFondo; // vacio = sin imagen de fondo
     @Column(length = 20)
     private String heroAlineacion = "izquierda"; // izquierda | centro
+    // Que parte de la foto queda siempre visible aunque se recorte en pantallas
+    // angostas (el "foco" o protagonismo de la imagen). Valores tipo CSS
+    // background-position: "left top", "center center", "right bottom", etc.
+    @Column(length = 20)
+    private String heroImagenPosicion = "center center";
     @Column(length = 20)
     private String heroEspaciado = "normal"; // compacto | normal | amplio
 
@@ -183,6 +188,8 @@ public class SiteConfig {
     public void setHeroImagenFondo(String v) { this.heroImagenFondo = v; }
     public String getHeroAlineacion() { return heroAlineacion; }
     public void setHeroAlineacion(String v) { this.heroAlineacion = v; }
+    public String getHeroImagenPosicion() { return heroImagenPosicion; }
+    public void setHeroImagenPosicion(String v) { this.heroImagenPosicion = v; }
     public String getHeroEspaciado() { return heroEspaciado; }
     public void setHeroEspaciado(String v) { this.heroEspaciado = v; }
     public String getWhatsappNumero() { return whatsappNumero; }
